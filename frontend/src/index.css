@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: Geist;
+  font-weight: 400;
+  src: url('./assets/fonts/Geist-Regular.ttf');
+}
+
+@font-face {
+  font-family: GeistMono;
+  font-weight: 400;
+  src: url('./assets/fonts/GeistMono-Regular.ttf');
+}
+
+@theme {
+  /* Font */
+  --font-geist: "Geist";
+  --font-geist-mono: "GeistMono";
+
+
+  /* Base */
+  --color-bg: #080a0f;
+  /* negro con matiz azul frío */
+  --color-surface: #0e1117;
+  /* cards y paneles */
+  --color-border: #1c2333;
+  /* bordes sutiles */
+  --color-border-hi: #2d3a52;
+  /* bordes hover/activo */
+
+  /* Texto */
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #334155;
+
+  /* Acento fraude — rojo operacional, no alarmista */
+  --color-fraud: #f43f5e;
+  /* rose-500 */
+  --color-fraud-dim: #1f0a10;
+  /* fondo de badge fraud */
+  --color-fraud-glow: rgba(244, 63, 94, 0.15);
+
+  /* Acento legítimo — verde terminal */
+  --color-legit: #10b981;
+  /* emerald-500 */
+  --color-legit-dim: #041f14;
+  --color-legit-glow: rgba(16, 185, 129, 0.12);
+
+  /* Acento neutro — azul datos */
+  --color-accent: #3b82f6;
+  /* blue-500 */
+  --color-accent-dim: #0a1628;
+}
+
+.recharts-wrapper * {
+  outline: none;
+}
