@@ -55,3 +55,19 @@
 .recharts-wrapper * {
   outline: none;
 }
+
+@keyframes fraud-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px var(--color-border), 0 0 0px var(--color-fraud-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 0 1px var(--color-fraud), 0 0 20px var(--color-fraud-glow);
+  }
+}
+
+.fraud-pulse {
+  animation: fraud-pulse 2.5s ease-in-out infinite;
+}
