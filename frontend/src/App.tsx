@@ -1,3 +1,4 @@
+import { FraudTimeline } from './components/FraudTimeline'
 import { KPICard } from './components/KPICard'
 
 export default function App() {
@@ -33,6 +34,9 @@ export default function App() {
                         subvalue="transacción outlier"
                         variant="fraud"
                     />
+                </div>
+                <div className="col-span-12">
+                    <FraudTimeline />
                 </div>
             </div>
         </div>
