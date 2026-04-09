@@ -1,3 +1,4 @@
+import { AmountDistribution } from './components/AmountDistribution'
 import { FraudTimeline } from './components/FraudTimeline'
 import { KPICard } from './components/KPICard'
 
@@ -37,6 +38,9 @@ export default function App() {
                 </div>
                 <div className="col-span-12">
                     <FraudTimeline />
+                </div>
+                <div className="col-span-6">
+                    <AmountDistribution />
                 </div>
             </div>
         </div>
