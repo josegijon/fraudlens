@@ -5,29 +5,35 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
     ResponsiveContainer,
+    Cell,
 } from 'recharts'
 
 type AmountBucket = {
-    range: string   // label del rango, ej: "$0–100"
-    legit: number   // transacciones legítimas en ese rango
-    fraud: number   // transacciones fraudulentas en ese rango
+    range: string
+    count: number
+    pct: number // % del total de fraudes en este rango
 }
 
-// Mock data — rangos de importe hasta $2.500 (outliers extremos excluidos)
-// Basado en distribución real del dataset de Kaggle
-// Las transacciones fraudulentas se concentran en el rango $0–$500
+// Mock data — distribución de importes exclusivamente de transacciones fraudulentas
+// Basado en el patrón real del dataset: fraude concentrado en importes bajos-medios
 const MOCK_DATA: AmountBucket[] = [
-    { range: '$0–100', legit: 98420, fraud: 241 },
-    { range: '$100–250', legit: 72340, fraud: 118 },
-    { range: '$250–500', legit: 48920, fraud: 72 },
-    { range: '$500–1k', legit: 32180, fraud: 38 },
-    { range: '$1k–2.5k', legit: 18640, fraud: 18 },
+    { range: '$0–50', count: 148, pct: 30.1 },
+    { range: '$50–100', count: 93, pct: 18.9 },
+    { range: '$100–250', count: 112, pct: 22.8 },
+    { range: '$250–500', count: 72, pct: 14.6 },
+    { range: '$500–1k', count: 38, pct: 7.7 },
+    { range: '$1k–2.5k', count: 18, pct: 3.7 },
+    { range: '>$2.5k', count: 11, pct: 2.2 },
 ]
 
-const FRAUD_COLOR = 'var(--color-fraud)'
-const LEGIT_COLOR = 'var(--color-legit)'
+// Intensidad de rojo proporcional al % — más fraude, más saturado
+const getBarColor = (pct: number) => {
+    if (pct >= 25) return 'var(--color-fraud)'
+    if (pct >= 15) return '#c2374a'
+    if (pct >= 8) return '#8f2636'
+    return '#5c1a24'
+}
 
 const CustomTooltip = ({
     active,
@@ -35,17 +41,12 @@ const CustomTooltip = ({
     label,
 }: {
     active?: boolean
-    payload?: { name: string; value: number; color: string }[]
+    payload?: { value: number }[]
     label?: string
 }) => {
     if (!active || !payload?.length) return null
 
-    const legit = payload.find(p => p.name === 'legit')
-    const fraud = payload.find(p => p.name === 'fraud')
-    const total = (legit?.value ?? 0) + (fraud?.value ?? 0)
-    const fraudRate = total > 0
-        ? ((fraud?.value ?? 0) / total * 100).toFixed(2)
-        : '0.00'
+    const point = MOCK_DATA.find(d => d.range === label)
 
     return (
         <div
@@ -61,39 +62,15 @@ const CustomTooltip = ({
             <p style={{ color: 'var(--color-text-secondary)', marginBottom: 6 }}>
                 {label}
             </p>
-            <p style={{ color: LEGIT_COLOR, marginBottom: 2 }}>
-                legítimo: {legit?.value.toLocaleString()}
-            </p>
-            <p style={{ color: FRAUD_COLOR, marginBottom: 6 }}>
-                fraude: {fraud?.value.toLocaleString()}
+            <p style={{ color: 'var(--color-fraud)', marginBottom: 2 }}>
+                {payload[0].value} transacciones fraudulentas
             </p>
             <p style={{ color: 'var(--color-text-muted)' }}>
-                tasa: {fraudRate}%
+                {point?.pct.toFixed(1)}% del total de fraudes
             </p>
         </div>
     )
 }
-
-const CustomLegend = () => (
-    <div
-        style={{
-            display: 'flex',
-            gap: 16,
-            fontFamily: 'GeistMono',
-            fontSize: 11,
-            color: 'var(--color-text-muted)',
-        }}
-    >
-        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 8, height: 8, borderRadius: 1, background: LEGIT_COLOR, display: 'inline-block' }} />
-            legítimo
-        </span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 8, height: 8, borderRadius: 1, background: FRAUD_COLOR, display: 'inline-block' }} />
-            fraude
-        </span>
-    </div>
-)
 
 export function AmountDistribution() {
     return (
@@ -101,16 +78,11 @@ export function AmountDistribution() {
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
                 <span className="text-xs tracking-widest uppercase font-[GeistMono] text-text-secondary">
-                    Distribución por importe
+                    Distribución de fraude por importe
                 </span>
                 <span className="text-xs font-[GeistMono] text-text-muted">
-                    outliers &gt;$2.500 excluidos
+                    492 transacciones fraudulentas
                 </span>
-            </div>
-
-            {/* Legend */}
-            <div className="mb-3">
-                <CustomLegend />
             </div>
 
             {/* Chart */}
@@ -120,7 +92,6 @@ export function AmountDistribution() {
                         data={MOCK_DATA}
                         margin={{ top: 4, right: 4, left: -24, bottom: 0 }}
                         barCategoryGap="30%"
-                        barGap={2}
                     >
                         <CartesianGrid
                             strokeDasharray="3 3"
@@ -129,20 +100,24 @@ export function AmountDistribution() {
                         />
                         <XAxis
                             dataKey="range"
-                            tick={{ fontFamily: 'GeistMono', fontSize: 11, fill: 'var(--color-text-muted)' }}
+                            tick={{ fontFamily: 'GeistMono', fontSize: 10, fill: 'var(--color-text-muted)' }}
                             tickLine={false}
                             axisLine={false}
                         />
                         <YAxis
-                            tickFormatter={(v) => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}
                             tick={{ fontFamily: 'GeistMono', fontSize: 11, fill: 'var(--color-text-muted)' }}
                             tickLine={false}
                             axisLine={false}
                         />
-                        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--color-border)', opacity: 0.4 }} />
-                        <Legend content={<></>} />
-                        <Bar dataKey="legit" name="legit" fill={LEGIT_COLOR} radius={[1, 1, 0, 0]} />
-                        <Bar dataKey="fraud" name="fraud" fill={FRAUD_COLOR} radius={[1, 1, 0, 0]} />
+                        <Tooltip
+                            content={<CustomTooltip />}
+                            cursor={{ fill: 'var(--color-border)', opacity: 0.4 }}
+                        />
+                        <Bar dataKey="count" radius={[1, 1, 0, 0]}>
+                            {MOCK_DATA.map((entry) => (
+                                <Cell key={entry.range} fill={getBarColor(entry.pct)} />
+                            ))}
+                        </Bar>
                     </BarChart>
                 </ResponsiveContainer>
             </div>
