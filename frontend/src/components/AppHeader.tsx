@@ -1,4 +1,13 @@
+import { useEffect, useState } from "react";
+import { getSummary, type Summary } from "../lib/api"
+
 export function AppHeader() {
+    const [data, setData] = useState<Summary | null>(null);
+
+    useEffect(() => {
+        getSummary().then(setData);
+    }, []);
+
     return (
         <header className="max-w-480 mx-auto col-span-12 flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-4 py-5">
             {/* Branding */}
@@ -20,7 +29,7 @@ export function AppHeader() {
                         ULB · Sep 2013
                     </span>
                     <span className="text-xs font-geist-mono text-text-muted">
-                        284.807 txns
+                        {data ? data.totalTransactions.toLocaleString() : '—'} txns
                     </span>
                 </div>
             </div>
