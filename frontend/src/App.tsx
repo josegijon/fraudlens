@@ -8,14 +8,14 @@ import { KPICard } from './components/KPICard'
 export default function App() {
     return (
         <div className="min-h-screen bg-bg md:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-6 md:grid-cols-12 gap-4">
                 {/* Header */}
-                <div className="md:col-span-12">
+                <div className="sm:col-span-6 md:col-span-12">
                     <AppHeader />
                 </div>
 
                 {/* Fila 1 — KPIs */}
-                <div className="md:col-span-3">
+                <div className="sm:col-span-3 px-4 md:px-0">
                     <KPICard
                         label="Tasa de fraude"
                         value="0.17%"
@@ -23,13 +23,13 @@ export default function App() {
                         variant="fraud"
                     />
                 </div>
-                <div className="md:col-span-3">
+                <div className="sm:col-span-3 px-4 md:px-0">
                     <KPICard
                         label="Total transacciones"
                         value="284.807"
                     />
                 </div>
-                <div className="md:col-span-3">
+                <div className="sm:col-span-3 px-4 md:px-0">
                     <KPICard
                         label="Importe fraude vs legítimo"
                         value="$122 / $88"
@@ -37,7 +37,7 @@ export default function App() {
                         variant="fraud"
                     />
                 </div>
-                <div className="md:col-span-3">
+                <div className="sm:col-span-3 px-4 md:px-0">
                     <KPICard
                         label="Importe máximo fraudulento"
                         value="$2.125"
