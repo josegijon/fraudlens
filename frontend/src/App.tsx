@@ -47,10 +47,10 @@ export default function App() {
                 </div>
 
                 {/* Fila 2 — Timeline + Feature Correlation */}
-                <div className="md:col-span-8">
+                <div className="sm:col-span-6 md:col-span-8 px-4 md:px-0">
                     <FraudTimeline />
                 </div>
-                <div className="md:col-span-4">
+                <div className="sm:col-span-6 md:col-span-4 px-4 md:px-0">
                     <FeatureCorrelation />
                 </div>
 
