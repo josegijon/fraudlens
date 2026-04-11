@@ -7,42 +7,8 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from 'recharts';
-
-type FraudTimelinePoint = {
-    hour: number
-    total: number
-    fraudCount: number
-    fraudRate: number
-}
-
-// Mock data — distribución realista basada en el dataset de Kaggle
-// El fraude tiende a concentrarse en horas de madrugada (0–4h) y tarde-noche (22–23h)
-const MOCK_DATA: FraudTimelinePoint[] = [
-    { hour: 0, total: 3842, fraudCount: 28, fraudRate: 0.73 },
-    { hour: 1, total: 2910, fraudCount: 24, fraudRate: 0.82 },
-    { hour: 2, total: 2340, fraudCount: 21, fraudRate: 0.90 },
-    { hour: 3, total: 1820, fraudCount: 18, fraudRate: 0.99 },
-    { hour: 4, total: 1540, fraudCount: 14, fraudRate: 0.91 },
-    { hour: 5, total: 1920, fraudCount: 10, fraudRate: 0.52 },
-    { hour: 6, total: 3210, fraudCount: 12, fraudRate: 0.37 },
-    { hour: 7, total: 5840, fraudCount: 14, fraudRate: 0.24 },
-    { hour: 8, total: 8920, fraudCount: 17, fraudRate: 0.19 },
-    { hour: 9, total: 11240, fraudCount: 18, fraudRate: 0.16 },
-    { hour: 10, total: 13580, fraudCount: 20, fraudRate: 0.15 },
-    { hour: 11, total: 14920, fraudCount: 21, fraudRate: 0.14 },
-    { hour: 12, total: 15340, fraudCount: 22, fraudRate: 0.14 },
-    { hour: 13, total: 14780, fraudCount: 22, fraudRate: 0.15 },
-    { hour: 14, total: 14120, fraudCount: 22, fraudRate: 0.16 },
-    { hour: 15, total: 13240, fraudCount: 21, fraudRate: 0.16 },
-    { hour: 16, total: 12180, fraudCount: 20, fraudRate: 0.16 },
-    { hour: 17, total: 11420, fraudCount: 19, fraudRate: 0.17 },
-    { hour: 18, total: 10840, fraudCount: 20, fraudRate: 0.18 },
-    { hour: 19, total: 9920, fraudCount: 19, fraudRate: 0.19 },
-    { hour: 20, total: 8740, fraudCount: 19, fraudRate: 0.22 },
-    { hour: 21, total: 7320, fraudCount: 19, fraudRate: 0.26 },
-    { hour: 22, total: 5840, fraudCount: 22, fraudRate: 0.38 },
-    { hour: 23, total: 4620, fraudCount: 26, fraudRate: 0.56 },
-]
+import { getFraudTimeline, type FraudTimelinePoint } from '../lib/api';
+import { useEffect, useState } from 'react';
 
 const formatHour = (hour: number) => `${String(hour).padStart(2, '0')}h`
 
@@ -50,14 +16,16 @@ const CustomTooltip = ({
     active,
     payload,
     label,
+    data
 }: {
     active?: boolean
     payload?: { value: number }[]
     label?: number
+    data: FraudTimelinePoint[]
 }) => {
     if (!active || !payload?.length) return null;
 
-    const point = MOCK_DATA[label ?? 0];
+    const point = data[label ?? 0];
 
     return (
         <div
@@ -84,6 +52,12 @@ const CustomTooltip = ({
 }
 
 export function FraudTimeline() {
+    const [data, setData] = useState<FraudTimelinePoint[]>([]);
+
+    useEffect(() => {
+        getFraudTimeline().then(setData);
+    }, []);
+
     return (
         <div className="flex flex-col gap-4 bg-surface border border-border rounded-sm px-5 py-4 h-full">
             {/* Header */}
@@ -95,7 +69,7 @@ export function FraudTimeline() {
             <div className="h-55 md:h-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
-                        data={MOCK_DATA}
+                        data={data}
                         margin={{ top: 4, right: 4, left: -24, bottom: 0 }}
                     >
                         <CartesianGrid
@@ -117,7 +91,7 @@ export function FraudTimeline() {
                             tickLine={false}
                             axisLine={false}
                         />
-                        <Tooltip content={<CustomTooltip />} />
+                        <Tooltip content={<CustomTooltip data={data} />} />
                         <Line
                             type="monotone"
                             dataKey="fraudRate"
