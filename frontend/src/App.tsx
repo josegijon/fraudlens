@@ -1,4 +1,5 @@
 import { AmountDistribution } from './components/AmountDistribution'
+import { AppHeader } from './components/AppHeader'
 import { FeatureCorrelation } from './components/FeatureCorrelation'
 import { FraudTimeline } from './components/FraudTimeline'
 import { HourlyPattern } from './components/HourlyPattern'
@@ -8,6 +9,7 @@ export default function App() {
     return (
         <div className="min-h-screen bg-bg p-8">
             <div className="grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-12 gap-4">
+                <AppHeader />
                 <div className="col-span-3">
                     <KPICard
                         label="Tasa de fraude"
