@@ -7,7 +7,7 @@ import { KPICard } from './components/KPICard'
 
 export default function App() {
     return (
-        <div className="min-h-screen bg-bg md:p-8">
+        <div className="min-h-screen bg-bg pb-4 md:p-8">
             <div className="grid grid-cols-1 sm:grid-cols-6 md:grid-cols-12 gap-4">
                 {/* Header */}
                 <div className="sm:col-span-6 md:col-span-12">
@@ -55,10 +55,10 @@ export default function App() {
                 </div>
 
                 {/* Fila 3 — Amount Distribution + Hourly Pattern */}
-                <div className="md:col-span-6">
+                <div className="sm:col-span-6 px-4 md:px-0">
                     <AmountDistribution />
                 </div>
-                <div className="md:col-span-6">
+                <div className="sm:col-span-6 px-4 md:px-0">
                     <HourlyPattern />
                 </div>
             </div>
