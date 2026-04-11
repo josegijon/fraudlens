@@ -1,6 +1,6 @@
 export function AppHeader() {
     return (
-        <header className="col-span-12 flex items-center justify-between border-b border-border pb-4 mb-2">
+        <header className="max-w-480 mx-auto col-span-12 flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-4 py-5">
             {/* Branding */}
             <div className="flex items-center gap-3">
                 <span className="text-lg font-geist-mono text-text-primary tracking-tight">

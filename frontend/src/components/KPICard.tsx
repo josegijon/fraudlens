@@ -19,7 +19,7 @@ export function KPICard({
             className={[
                 'relative flex flex-col justify-between',
                 'bg-surface border border-border rounded-sm',
-                'px-5 py-4 min-h-25',
+                'px-5 py-4 min-h-25 h-full',
                 isFraud ? 'fraud-pulse' : '',
             ].join(' ')}
         >

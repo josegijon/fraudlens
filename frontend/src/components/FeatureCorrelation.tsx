@@ -72,13 +72,13 @@ const CustomTooltip = ({
 
 export function FeatureCorrelation() {
     return (
-        <div className="bg-surface border border-border rounded-sm px-5 py-4">
+        <div className="flex flex-col gap-4 bg-surface border border-border rounded-sm px-5 py-4 h-full">
             {/* Header */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between gap-2">
                 <span className="text-xs tracking-widest uppercase font-[GeistMono] text-text-secondary">
                     Correlación de features con fraude
                 </span>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col lg:flex-row items-center gap-4">
                     <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'GeistMono', fontSize: 11, color: 'var(--color-text-muted)' }}>
                         <span style={{ width: 8, height: 8, borderRadius: 1, background: FRAUD_COLOR, display: 'inline-block' }} />
                         negativa

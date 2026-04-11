@@ -85,14 +85,14 @@ const CustomTooltip = ({
 
 export function FraudTimeline() {
     return (
-        <div className="bg-surface border border-border rounded-sm px-5 py-4">
+        <div className="flex flex-col gap-4 bg-surface border border-border rounded-sm px-5 py-4 h-full">
             {/* Header */}
             <span className="text-xs tracking-widest uppercase font-[GeistMono] text-text-secondary">
                 Tasa de fraude por hora
             </span>
 
             {/* Chart */}
-            <div className="mt-4 h-55">
+            <div className="h-55 md:h-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                         data={MOCK_DATA}

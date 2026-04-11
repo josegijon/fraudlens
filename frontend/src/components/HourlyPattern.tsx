@@ -102,7 +102,7 @@ const CustomTooltip = ({
 
 export function HourlyPattern() {
     return (
-        <div className="bg-surface border border-border rounded-sm px-5 py-4">
+        <div className="bg-surface border border-border rounded-sm px-5 py-4 h-full">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
                 <span className="text-xs tracking-widest uppercase font-[GeistMono] text-text-secondary">
