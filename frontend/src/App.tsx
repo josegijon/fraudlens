@@ -8,8 +8,11 @@ import { KPICard } from './components/KPICard'
 export default function App() {
     return (
         <div className="min-h-screen bg-bg p-8">
-            <div className="grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-12 gap-4">
+            <div className="grid grid-cols-12 gap-4">
+                {/* Header */}
                 <AppHeader />
+
+                {/* Fila 1 — KPIs */}
                 <div className="col-span-3">
                     <KPICard
                         label="Tasa de fraude"
@@ -40,17 +43,21 @@ export default function App() {
                         variant="fraud"
                     />
                 </div>
-                <div className="col-span-12">
+
+                {/* Fila 2 — Timeline + Feature Correlation */}
+                <div className="col-span-8">
                     <FraudTimeline />
                 </div>
+                <div className="col-span-4">
+                    <FeatureCorrelation />
+                </div>
+
+                {/* Fila 3 — Amount Distribution + Hourly Pattern */}
                 <div className="col-span-6">
                     <AmountDistribution />
                 </div>
                 <div className="col-span-6">
                     <HourlyPattern />
-                </div>
-                <div className="col-span-5">
-                    <FeatureCorrelation />
                 </div>
             </div>
         </div>
