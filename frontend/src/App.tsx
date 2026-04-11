@@ -7,13 +7,15 @@ import { KPICard } from './components/KPICard'
 
 export default function App() {
     return (
-        <div className="min-h-screen bg-bg p-8">
-            <div className="grid grid-cols-12 gap-4">
+        <div className="min-h-screen bg-bg md:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                 {/* Header */}
-                <AppHeader />
+                <div className="md:col-span-12">
+                    <AppHeader />
+                </div>
 
                 {/* Fila 1 — KPIs */}
-                <div className="col-span-3">
+                <div className="md:col-span-3">
                     <KPICard
                         label="Tasa de fraude"
                         value="0.17%"
@@ -21,13 +23,13 @@ export default function App() {
                         variant="fraud"
                     />
                 </div>
-                <div className="col-span-3">
+                <div className="md:col-span-3">
                     <KPICard
                         label="Total transacciones"
                         value="284.807"
                     />
                 </div>
-                <div className="col-span-3">
+                <div className="md:col-span-3">
                     <KPICard
                         label="Importe fraude vs legítimo"
                         value="$122 / $88"
@@ -35,7 +37,7 @@ export default function App() {
                         variant="fraud"
                     />
                 </div>
-                <div className="col-span-3">
+                <div className="md:col-span-3">
                     <KPICard
                         label="Importe máximo fraudulento"
                         value="$2.125"
@@ -45,18 +47,18 @@ export default function App() {
                 </div>
 
                 {/* Fila 2 — Timeline + Feature Correlation */}
-                <div className="col-span-8">
+                <div className="md:col-span-8">
                     <FraudTimeline />
                 </div>
-                <div className="col-span-4">
+                <div className="md:col-span-4">
                     <FeatureCorrelation />
                 </div>
 
                 {/* Fila 3 — Amount Distribution + Hourly Pattern */}
-                <div className="col-span-6">
+                <div className="md:col-span-6">
                     <AmountDistribution />
                 </div>
-                <div className="col-span-6">
+                <div className="md:col-span-6">
                     <HourlyPattern />
                 </div>
             </div>
