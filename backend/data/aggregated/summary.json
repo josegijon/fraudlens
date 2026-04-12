@@ -1,0 +1,9 @@
+{
+    "totalTransactions": 284807,
+    "fraudCount": 492,
+    "legitCount": 284315,
+    "fraudRate": 0.17,
+    "avgAmountFraud": 122.21,
+    "avgAmountLegit": 88.29,
+    "maxAmountFraud": 2125.87
+}
