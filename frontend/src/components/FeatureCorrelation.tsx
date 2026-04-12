@@ -9,26 +9,8 @@ import {
     Cell,
     ReferenceLine,
 } from 'recharts'
-
-type FeaturePoint = {
-    feature: string
-    correlation: number
-}
-
-// Correlaciones reales del dataset de Kaggle (Class vs V1–V28)
-// Ordenadas por valor absoluto descendente — las más predictivas primero
-const MOCK_DATA: FeaturePoint[] = [
-    { feature: 'V17', correlation: -0.327 },
-    { feature: 'V14', correlation: -0.302 },
-    { feature: 'V12', correlation: -0.261 },
-    { feature: 'V10', correlation: -0.216 },
-    { feature: 'V16', correlation: -0.196 },
-    { feature: 'V3', correlation: -0.192 },
-    { feature: 'V7', correlation: -0.187 },
-    { feature: 'V11', correlation: 0.154 },
-    { feature: 'V4', correlation: 0.133 },
-    { feature: 'V2', correlation: -0.091 },
-]
+import { getFeatureCorrelation, type FeaturePoint } from '../lib/api'
+import { useEffect, useState } from 'react'
 
 const FRAUD_COLOR = 'var(--color-fraud)'
 const LEGIT_COLOR = 'var(--color-legit)'
@@ -44,6 +26,7 @@ const CustomTooltip = ({
     active?: boolean
     payload?: { value: number }[]
     label?: string
+    data: FeaturePoint[]
 }) => {
     if (!active || !payload?.length) return null
 
@@ -71,6 +54,12 @@ const CustomTooltip = ({
 }
 
 export function FeatureCorrelation() {
+    const [data, setData] = useState<FeaturePoint[]>([]);
+
+    useEffect(() => {
+        getFeatureCorrelation().then(setData);
+    }, []);
+
     return (
         <div className="flex flex-col gap-4 bg-surface border border-border rounded-sm px-5 py-4 h-full">
             {/* Header */}
@@ -94,7 +83,7 @@ export function FeatureCorrelation() {
             <div className="h-70">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
-                        data={MOCK_DATA}
+                        data={data}
                         layout="vertical"
                         margin={{ top: 4, right: 24, left: 8, bottom: 0 }}
                         barCategoryGap="25%"
@@ -121,7 +110,7 @@ export function FeatureCorrelation() {
                             width={32}
                         />
                         <Tooltip
-                            content={<CustomTooltip />}
+                            content={<CustomTooltip data={data} />}
                             cursor={{ fill: 'var(--color-border)', opacity: 0.4 }}
                         />
                         <ReferenceLine
@@ -130,7 +119,7 @@ export function FeatureCorrelation() {
                             strokeWidth={1}
                         />
                         <Bar dataKey="correlation" radius={[0, 1, 1, 0]}>
-                            {MOCK_DATA.map((entry) => (
+                            {data.map((entry) => (
                                 <Cell key={entry.feature} fill={getBarColor(entry.correlation)} />
                             ))}
                         </Bar>
