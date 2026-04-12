@@ -1,0 +1,42 @@
+[
+    {
+        "feature": "V17",
+        "correlation": -0.326
+    },
+    {
+        "feature": "V14",
+        "correlation": -0.303
+    },
+    {
+        "feature": "V12",
+        "correlation": -0.261
+    },
+    {
+        "feature": "V10",
+        "correlation": -0.217
+    },
+    {
+        "feature": "V16",
+        "correlation": -0.197
+    },
+    {
+        "feature": "V3",
+        "correlation": -0.193
+    },
+    {
+        "feature": "V7",
+        "correlation": -0.187
+    },
+    {
+        "feature": "V11",
+        "correlation": 0.155
+    },
+    {
+        "feature": "V4",
+        "correlation": 0.133
+    },
+    {
+        "feature": "V18",
+        "correlation": -0.111
+    }
+]
