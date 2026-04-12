@@ -8,24 +8,8 @@ import {
     ResponsiveContainer,
     Cell,
 } from 'recharts'
-
-type AmountBucket = {
-    range: string
-    count: number
-    pct: number // % del total de fraudes en este rango
-}
-
-// Mock data — distribución de importes exclusivamente de transacciones fraudulentas
-// Basado en el patrón real del dataset: fraude concentrado en importes bajos-medios
-const MOCK_DATA: AmountBucket[] = [
-    { range: '$0–50', count: 148, pct: 30.1 },
-    { range: '$50–100', count: 93, pct: 18.9 },
-    { range: '$100–250', count: 112, pct: 22.8 },
-    { range: '$250–500', count: 72, pct: 14.6 },
-    { range: '$500–1k', count: 38, pct: 7.7 },
-    { range: '$1k–2.5k', count: 18, pct: 3.7 },
-    { range: '>$2.5k', count: 11, pct: 2.2 },
-]
+import { getAmountDistribution, type AmountBucket } from '../lib/api'
+import { useEffect, useState } from 'react'
 
 // Intensidad de rojo proporcional al % — más fraude, más saturado
 const getBarColor = (pct: number) => {
@@ -39,14 +23,16 @@ const CustomTooltip = ({
     active,
     payload,
     label,
+    data
 }: {
     active?: boolean
     payload?: { value: number }[]
     label?: string
+    data: AmountBucket[]
 }) => {
     if (!active || !payload?.length) return null
 
-    const point = MOCK_DATA.find(d => d.range === label)
+    const point = data.find(d => d.range === label)
 
     return (
         <div
@@ -73,6 +59,12 @@ const CustomTooltip = ({
 }
 
 export function AmountDistribution() {
+    const [data, setData] = useState<AmountBucket[]>([]);
+
+    useEffect(() => {
+        getAmountDistribution().then(setData);
+    }, []);
+
     return (
         <div className="bg-surface border border-border rounded-sm px-5 py-4 h-full">
             {/* Header */}
@@ -81,7 +73,7 @@ export function AmountDistribution() {
                     Distribución de fraude por importe
                 </span>
                 <span className="text-xs font-[GeistMono] text-text-muted">
-                    492 transacciones fraudulentas
+                    {data.reduce((acc, d) => acc + d.count, 0)} transacciones fraudulentas
                 </span>
             </div>
 
@@ -89,7 +81,7 @@ export function AmountDistribution() {
             <div className="h-55">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
-                        data={MOCK_DATA}
+                        data={data}
                         margin={{ top: 4, right: 4, left: -24, bottom: 0 }}
                         barCategoryGap="30%"
                     >
@@ -110,11 +102,11 @@ export function AmountDistribution() {
                             axisLine={false}
                         />
                         <Tooltip
-                            content={<CustomTooltip />}
+                            content={<CustomTooltip data={data} />}
                             cursor={{ fill: 'var(--color-border)', opacity: 0.4 }}
                         />
                         <Bar dataKey="count" radius={[1, 1, 0, 0]}>
-                            {MOCK_DATA.map((entry) => (
+                            {data.map((entry) => (
                                 <Cell key={entry.range} fill={getBarColor(entry.pct)} />
                             ))}
                         </Bar>

@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
-import { getSummary, type Summary } from "../lib/api"
+import { type Summary } from "../lib/api"
 
-export function AppHeader() {
-    const [data, setData] = useState<Summary | null>(null);
+interface AppHeaderProps {
+    data: Summary | null;
+}
 
-    useEffect(() => {
-        getSummary().then(setData);
-    }, []);
-
+export function AppHeader({ data }: AppHeaderProps) {
     return (
         <header className="max-w-480 mx-auto col-span-12 flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-4 py-5">
             {/* Branding */}
