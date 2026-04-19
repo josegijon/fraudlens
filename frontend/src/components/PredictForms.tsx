@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { API_URL, getFeatureStats, type FeatureStats } from '../lib/api';
+import { useState } from "react";
+import { API_URL } from '../lib/api';
 
 type PredictResult = {
     is_fraud: boolean
@@ -38,15 +38,10 @@ const confidenceLabel: Record<string, string> = {
 };
 
 export const PredictForm = () => {
-    const [stats, setStats] = useState<FeatureStats | null>(null);
     const [amount, setAmount] = useState<number>(88.35);
     const [result, setResult] = useState<PredictResult | null>(null);
     const [loading, setLoading] = useState(false);
     const [features, setFeatures] = useState(PRESET_LEGIT.features);
-
-    useEffect(() => {
-        getFeatureStats().then(setStats);
-    }, []);
 
     const handleSubmit = async () => {
         setLoading(true)
