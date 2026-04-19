@@ -80,3 +80,18 @@ top10_original['correlation'] = top10_original['correlation'].round(3)
 
 with open(aggregated_dir / ("feature_corr.json"), "w", encoding="utf-8") as f:
     json.dump(top10_original.to_dict(orient='records'), f, indent=4, ensure_ascii=False)
+
+
+# Estadísticas para el formulario de predicción
+feature_cols = [f'V{i}' for i in range(1, 29)] + ['Amount']
+
+stats = {}
+for col in feature_cols:
+    stats[col] = {
+        'mean': round(df[col].mean(), 4),
+        'min': round(df[col].quantile(0.01), 4),
+        'max': round(df[col].quantile(0.99), 4),
+    }
+
+with open(aggregated_dir / 'feature_stats.json', 'w', encoding='utf-8') as f:
+    json.dump(stats, f, indent=4, ensure_ascii=False)

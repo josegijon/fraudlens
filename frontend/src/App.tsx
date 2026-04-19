@@ -6,6 +6,7 @@ import { FraudTimeline } from './components/FraudTimeline'
 import { HourlyPattern } from './components/HourlyPattern'
 import { KPICard } from './components/KPICard'
 import { getSummary, type Summary } from './lib/api'
+import { PredictForm } from './components/PredictForms'
 
 export default function App() {
     const [data, setData] = useState<Summary | null>(null);
@@ -69,6 +70,10 @@ export default function App() {
                 </div>
                 <div className="sm:col-span-6">
                     <HourlyPattern />
+                </div>
+
+                <div className="col-span-3">
+                    <PredictForm />
                 </div>
             </div>
         </div>
