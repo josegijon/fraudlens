@@ -1,10 +1,11 @@
 import pandas as pd 
 from pathlib import Path 
 import joblib
+import json
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, roc_auc_score, precision_score
-# from sklearn.metrics import recall_score
+from sklearn.metrics import classification_report, roc_auc_score, precision_score, f1_score # precision_score: Calcula cuantos de los bloqueos fueron aciertos reales
+from sklearn.metrics import recall_score    # Calcula cuantos fraudes del total lograste capturar 
 # import numpy as np
 
 data_path = Path(__file__).resolve()    # Ruta absoluta de este archivo
@@ -41,8 +42,23 @@ y_proba = model.predict_proba(X_test)[:, 1]     # Devuelve la probabilidad de ca
 
 y_pred_final = (y_proba >= 0.30).astype(int)    # Aplica el umbral elegido para convertir probabilidades en veredictos finales
 
+precision = round(precision_score(y_test, y_pred_final), 3)     # Calcula que porcentaje de las alarmas dadas fueron fraudes reales
+recall = round(recall_score(y_test, y_pred_final), 3)           # Calcula cuantos fraudes reales logro atrapar con ese umbral
+f1 = round(f1_score(y_test, y_pred_final), 3)
+auc = round(roc_auc_score(y_test, y_proba), 3)
+
 # print(classification_report(y_test, y_pred))    # Muestra con el umbral por defecto (0.5)
 # print(f"AUC-ROC: {roc_auc_score(y_test, y_proba):.4f}")
+
+metrics = {
+    "precision": precision,
+    "recall": recall,
+    "f1": f1,
+    "auc": auc,
+}
+
+with open(aggregated_dir / ("metrics.json"), "w", encoding="utf-8") as f:
+    json.dump(metrics, f, indent=4, ensure_ascii=False)
 
 joblib.dump({'model': model, 'threshold': 0.30}, models_dir / 'model.pkl')
 print("Modelo guardado en models/model.pkl")

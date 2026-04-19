@@ -7,6 +7,7 @@ import { HourlyPattern } from './components/HourlyPattern'
 import { KPICard } from './components/KPICard'
 import { getSummary, type Summary } from './lib/api'
 import { PredictForm } from './components/PredictForms'
+import { ModelMetrics } from './components/ModelMetrics'
 
 export default function App() {
     const [data, setData] = useState<Summary | null>(null);
@@ -72,7 +73,11 @@ export default function App() {
                     <HourlyPattern />
                 </div>
 
-                <div className="col-span-3">
+                <div className="sm:col-span-6 md:col-span-9">
+                    <ModelMetrics />
+                </div>
+
+                <div className="sm:col-span-6 md:col-span-3">
                     <PredictForm />
                 </div>
             </div>
