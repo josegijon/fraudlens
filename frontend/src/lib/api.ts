@@ -1,6 +1,6 @@
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
+export const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -39,6 +39,14 @@ export type FeaturePoint = {
     correlation: number
 }
 
+export type FeatureStats = {
+    [key: string]: {
+        mean: number;
+        min: number;
+        max: number;
+    }
+}
+
 // ─── Fetch functions ──────────────────────────────────────────────────────────
 
 export async function getSummary(): Promise<Summary> {
@@ -63,5 +71,10 @@ export async function getHourlyPattern(): Promise<HourlyPoint[]> {
 
 export async function getFeatureCorrelation(): Promise<FeaturePoint[]> {
     const res = await fetch(`${API_URL}/feature-correlation`)
+    return res.json()
+}
+
+export async function getFeatureStats(): Promise<FeatureStats> {
+    const res = await fetch(`${API_URL}/feature-stats`)
     return res.json()
 }

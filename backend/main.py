@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 import joblib
 from pydantic import BaseModel
+import numpy as np
 
 data_path = Path(__file__).resolve()
 BASE_DIR = data_path.parent
@@ -85,17 +86,20 @@ def feature_corr():
     with open(aggregated_dir / 'feature_corr.json', 'r') as f:
         return json.load(f)
 
+@app.get('/feature-stats')
+def feature_stats():
+    with open(aggregated_dir / 'feature_stats.json', 'r') as f:
+        return json.load(f)
+
 @app.post('/predict')
 def predict_fraud(data: TransactionInput):
-    confidence = []
-
     data_list = [list(data.model_dump().values())]  # Convierte el objeto Pydantic en diccionario con .dump(), .value() extrae los valores es una lista
     probability = round(float(model.predict_proba(data_list)[0][1]), 4) # Devuelve una matriz
-    is_fraud = probability >= threshold
+    is_fraud = bool(probability >= threshold)
 
     confidence = 'low'  # Por defecto, transacción segura, probability <= 0.30
 
-    if probability <= 0.60 and probability > 0.30:
+    if 0.30 < probability <= 0.60:
         confidence = 'medium'   # Dudas, revisión manual o SMS de confirmación del cliente
     
     if probability > 0.60:
