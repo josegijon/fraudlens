@@ -1,5 +1,4 @@
 data/creditcard.csv
-models/model.pkl
 __pycache__/
 *.pyc
 .env
