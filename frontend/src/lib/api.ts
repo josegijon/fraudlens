@@ -47,6 +47,13 @@ export type FeatureStats = {
     }
 }
 
+export type Metrics = {
+    precision: number,
+    recall: number,
+    f1: number,
+    auc: number,
+}
+
 // ─── Fetch functions ──────────────────────────────────────────────────────────
 
 export async function getSummary(): Promise<Summary> {
@@ -76,5 +83,10 @@ export async function getFeatureCorrelation(): Promise<FeaturePoint[]> {
 
 export async function getFeatureStats(): Promise<FeatureStats> {
     const res = await fetch(`${API_URL}/feature-stats`)
+    return res.json()
+}
+
+export async function getMetrics(): Promise<Metrics> {
+    const res = await fetch(`${API_URL}/metrics`)
     return res.json()
 }

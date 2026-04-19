@@ -77,7 +77,7 @@ export const PredictForm = () => {
             {!result && (
                 <div className="flex flex-col gap-4">
                     {/* Presets */}
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 md:flex-col lg:flex-row">
                         <button
                             onClick={() => applyPreset(PRESET_LEGIT)}
                             className="text-xs font-geist-mono px-3 py-1.5 rounded-sm border border-border text-legit hover:border-legit transition-colors cursor-pointer"
@@ -105,33 +105,6 @@ export const PredictForm = () => {
                         />
                     </div>
 
-                    {/* Sliders V1–V5 */}
-                    {/* {['V1', 'V2', 'V3', 'V4', 'V5'].map((key) => (
-                        <div key={key} className="flex flex-col gap-1">
-                            <div className="flex items-center justify-between">
-                                <label className="text-xs font-geist-mono text-text-secondary uppercase tracking-widest">
-                                    {key}
-                                </label>
-                                <span className="text-xs font-geist-mono text-text-muted">
-                                    {sliders[key as keyof typeof sliders].toFixed(2)}
-                                </span>
-                            </div>
-                            <input
-                                type="range"
-                                step="0.01"
-                                min={stats?.[key]?.min ?? -7}
-                                max={stats?.[key]?.max ?? 7}
-                                value={sliders[key as keyof typeof sliders]}
-                                onChange={(e) => setSliders(prev => ({ ...prev, [key]: Number(e.target.value) }))}
-                                className="w-full accent-fraud"
-                            />
-                            <div className="flex justify-between">
-                                <span className="text-xs font-geist-mono text-text-muted">{stats?.[key]?.min?.toFixed(2)}</span>
-                                <span className="text-xs font-geist-mono text-text-muted">{stats?.[key]?.max?.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    ))} */}
-
                     {/* Submit */}
                     <button
                         onClick={handleSubmit}
@@ -145,22 +118,22 @@ export const PredictForm = () => {
 
             {/* Resultado */}
             {result && (
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 md:justify-around md:h-full">
                     {/* Badge principal */}
                     <div className={`flex flex-col gap-2 p-4 rounded-sm border ${result.is_fraud ? 'border-fraud bg-fraud-dim' : 'border-legit bg-legit-dim'}`}>
-                        <span className={`text-lg font-geist-mono ${result.is_fraud ? 'text-fraud' : 'text-legit'}`}>
+                        <span className={`text-lg font-geist-mono md:text-sm md:text-center xl:text-left lg:text-lg ${result.is_fraud ? 'text-fraud' : 'text-legit'}`}>
                             {result.is_fraud ? '⚠ FRAUDE DETECTADO' : '✓ TRANSACCIÓN LEGÍTIMA'}
                         </span>
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-6 md:flex-col md:gap-2 xl:flex-row">
                             <div className="flex flex-col">
                                 <span className="text-xs font-geist-mono text-text-muted uppercase tracking-widest">Probabilidad</span>
-                                <span className={`text-2xl font-geist-mono ${result.is_fraud ? 'text-fraud' : 'text-legit'}`}>
+                                <span className={`text-2xl font-geist-mono md:text-center xl:text-left ${result.is_fraud ? 'text-fraud' : 'text-legit'}`}>
                                     {(result.probability * 100).toFixed(1)}%
                                 </span>
                             </div>
                             <div className="flex flex-col">
                                 <span className="text-xs font-geist-mono text-text-muted uppercase tracking-widest">Confianza</span>
-                                <span className="text-2xl font-geist-mono text-text-primary">
+                                <span className="text-2xl font-geist-mono text-text-primary md:text-center xl:text-left">
                                     {confidenceLabel[result.confidence]}
                                 </span>
                             </div>

@@ -106,3 +106,9 @@ def predict_fraud(data: TransactionInput):
         confidence = 'high'     # Acción inmediata
 
     return {"is_fraud": is_fraud, "probability": probability, "confidence": confidence}
+
+
+@app.get('/metrics')
+def metrics():
+    with open(aggregated_dir / 'metrics.json', 'r') as f:
+        return json.load(f)
