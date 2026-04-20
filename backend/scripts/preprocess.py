@@ -33,18 +33,19 @@ with open(aggregated_dir / ("summary.json"), "w", encoding="utf-8") as f:
 
 # ------------------------------------------------------------------------------------
 
-df['hour'] = (df['Time'] % 86400) // 3600
+df['hour'] = (df['Time'] % 86400) // 3600   # Crea columna 'hour'
 
-hourly_stats = df.groupby('hour').agg(
-    total=('Class', 'count'),
-    fraudCount=('Class', 'sum')
-).reset_index()
+# Realiza una agregación estadística
+hourly_stats = df.groupby('hour').agg(      # Agrupa todas las filas por hour
+    total=('Class', 'count'),               # Cuenta cuantas transacciones hubo a esa hora
+    fraudCount=('Class', 'sum')             # Suma los valores de Class, número total de fraudes detectados por ser '1'
+).reset_index()                             # Convierte la hora de nuevo en una columna normal.
 
-hourly_stats['hour'] = hourly_stats['hour'].astype(int)
+hourly_stats['hour'] = hourly_stats['hour'].astype(int) # Convierte a entero
 
-hourly_stats['fraudRate'] = round((hourly_stats['fraudCount'] / hourly_stats['total']) * 100, 2)
+hourly_stats['fraudRate'] = round((hourly_stats['fraudCount'] / hourly_stats['total']) * 100, 2)    # Crea nueva columna
 
-hourly_summary = hourly_stats.to_dict(orient='records')
+hourly_summary = hourly_stats.to_dict(orient='records') # Pasa de tabla de Pandas a lista de Python. records = lista de diccionarios
 
 with open(aggregated_dir / ("fraud_timeline.json"), "w", encoding="utf-8") as f:
     json.dump(hourly_summary, f, indent=4, ensure_ascii=False)

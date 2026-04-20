@@ -150,17 +150,17 @@ El umbral por defecto (0.50) producía recall de 0.76 en fraude. Tras evaluar um
 | Umbral | Recall | Precision |
 |---|---|---|
 | 0.25 | 0.827 | 0.931 |
-| **0.30** | **0.806** | **0.929** |
-| 0.35 | 0.776 | 0.950 |
+| **0.30** | **0.827** | **0.953** |
+| 0.35 | 0.806 | 0.952 |
 
 ### Métricas finales (test set, 20% del dataset)
 
 | Métrica | Resultado | Objetivo |
 |---|---|---|
-| AUC-ROC | **0.958** | ≥ 0.95 ✅ |
-| Recall (fraude) | **0.816** | ≥ 0.80 ✅ |
-| Precision (fraude) | **0.930** | ≥ 0.85 ✅ |
-| F1-Score | **0.870** | ≥ 0.70 ✅ |
+| AUC-ROC | **0.953** | ≥ 0.95 ✅ |
+| Recall (fraude) | **0.827** | ≥ 0.80 ✅ |
+| Precision (fraude) | **0.953** | ≥ 0.85 ✅ |
+| F1-Score | **0.885** | ≥ 0.70 ✅ |
 
 ---
 

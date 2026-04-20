@@ -16,7 +16,8 @@ const PRESET_LEGIT = {
         V21: -0.0183, V22: 0.2778, V23: -0.1105, V24: 0.0669, V25: 0.1285,
         V26: -0.1891, V27: 0.1336, V28: -0.0211
     },
-    amount: 149.62
+    amount: 149.62,
+    hour: 12
 }
 
 const PRESET_FRAUD = {
@@ -28,7 +29,8 @@ const PRESET_FRAUD = {
         V21: 0.5176, V22: -0.3556, V23: -0.0498, V24: -0.2136, V25: 0.1425,
         V26: 0.0794, V27: 0.2052, V28: 0.0199
     },
-    amount: 1.0
+    amount: 1.0,
+    hour: 2,
 }
 
 const confidenceLabel: Record<string, string> = {
@@ -38,27 +40,29 @@ const confidenceLabel: Record<string, string> = {
 };
 
 export const PredictForm = () => {
+    const [hour, setHour] = useState<number>(0);
     const [amount, setAmount] = useState<number>(88.35);
     const [result, setResult] = useState<PredictResult | null>(null);
     const [loading, setLoading] = useState(false);
     const [features, setFeatures] = useState(PRESET_LEGIT.features);
 
     const handleSubmit = async () => {
-        setLoading(true)
+        setLoading(true);
         const res = await fetch(`${API_URL}/predict`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...features, Amount: amount })
-        })
-        const data = await res.json()
-        setResult(data)
-        setLoading(false)
+            body: JSON.stringify({ ...features, Amount: amount, hour: hour })
+        });
+        const data = await res.json();
+        setResult(data);
+        setLoading(false);
     };
 
     const applyPreset = (preset: typeof PRESET_LEGIT) => {
-        setFeatures(preset.features)
-        setAmount(preset.amount)
-        setResult(null)
+        setFeatures(preset.features);
+        setAmount(preset.amount);
+        setHour(preset.hour);
+        setResult(null);
     };
 
     return (
@@ -98,6 +102,31 @@ export const PredictForm = () => {
                             onChange={(e) => setAmount(Number(e.target.value))}
                             className="bg-bg border border-border rounded-sm px-3 py-2 text-sm font-geist-mono text-text-primary focus:border-border-hi focus:outline-none"
                         />
+                    </div>
+
+                    {/* Hour */}
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center justify-between">
+                            <label className="text-xs font-[GeistMono] text-text-secondary uppercase tracking-widest">
+                                Hora
+                            </label>
+                            <span className="text-xs font-[GeistMono] text-text-muted">
+                                {String(hour).padStart(2, '0')}h
+                            </span>
+                        </div>
+                        <input
+                            type="range"
+                            min={0}
+                            max={23}
+                            step={1}
+                            value={hour}
+                            onChange={(e) => setHour(Number(e.target.value))}
+                            className="w-full accent-fraud"
+                        />
+                        <div className="flex justify-between">
+                            <span className="text-xs font-[GeistMono] text-text-muted">00h</span>
+                            <span className="text-xs font-[GeistMono] text-text-muted">23h</span>
+                        </div>
                     </div>
 
                     {/* Submit */}

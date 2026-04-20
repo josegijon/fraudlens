@@ -15,6 +15,7 @@ models_dir = BASE_DIR / 'models'
 
 df = pd.read_csv(BASE_DIR / 'data' / 'creditcard.csv')    # Carga el csv
 
+df['hour'] = (df['Time'] % 86400) // 3600
 x = df.drop(columns=['Time', 'Class'])    # Elimina las columnas que no necesitamos (Features)
 y = df['Class']                           # Separa una columna (Target)
 
