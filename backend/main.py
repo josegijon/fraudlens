@@ -44,6 +44,7 @@ class TransactionInput(BaseModel):      # Clase heredada de BaseModel
     V27: float
     V28: float
     Amount: float
+    hour: float
 
 
 app = FastAPI()
